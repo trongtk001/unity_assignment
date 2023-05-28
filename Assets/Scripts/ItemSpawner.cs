@@ -12,9 +12,11 @@ public class ItemSpawner : MonoBehaviour
     public const float SpawnSpeed = 200f;
     public int maxItemCount = 3;
 
+    public int bearLifeTime = 10;
+
     private float _nextSpawnTime;
     private int _itemCount;
-    private float _xConstraint = 9.2f, _yConstraint = 4.1f;
+    private float _xConstraint = 7.6f, _yConstraint = 4.1f;
 
     private void Start()
     {
@@ -41,6 +43,10 @@ public class ItemSpawner : MonoBehaviour
         GameObject newItem = Instantiate(itemPrefab, spawnPosition, Quaternion.identity);
         _itemCount++;
 
+        // Bear tự hủy sau 1 thời gian
+
+        DestroyItemByTime(newItem, bearLifeTime);
+
         // Di chuyển vật phẩm vào trong màn hình
         Rigidbody2D itemRb = newItem.GetComponent<Rigidbody2D>();
         itemRb.AddForce(moveDirection * SpawnSpeed);
@@ -49,6 +55,11 @@ public class ItemSpawner : MonoBehaviour
     public void DestroyItem(GameObject item)
     {
         Destroy(item);
+        _itemCount--;
+    }
+    public void DestroyItemByTime(GameObject item, int time)
+    {
+        Destroy(item,time);
         _itemCount--;
     }
 
